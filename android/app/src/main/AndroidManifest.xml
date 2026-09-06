@@ -38,4 +38,11 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required for the website's "Use my current location" feature
+         (navigator.geolocation) to work inside the WebView — Capacitor's
+         bridge already handles requesting this at runtime and relaying it
+         to the web page, but Android won't even show that prompt unless
+         the app declares it here first. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>
