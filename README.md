@@ -1,16 +1,37 @@
-# React + Vite
+# Podi Kitchen
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Ordering website for Podi Kitchen — a home kitchen selling South Indian breakfast (idli, dosa, tiffins, sides, combos, beverages). Customers customize items and check out over WhatsApp; a small admin panel manages the menu.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite, Tailwind CSS
+- [Supabase](https://supabase.com) (Postgres + Auth) for the admin panel and customer accounts — optional; the public menu works from static data in `src/data/menu.js` even without it configured
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+npm install
+npm run dev
+```
 
-## Expanding the Oxlint configuration
+## Editing the menu without Supabase
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Edit `src/data/menu.js` directly — shop info (WhatsApp number, hours, delivery area, social links) and every menu item live there. Rebuild (`npm run build`) and redeploy to see changes.
+
+## Setting up the admin panel + customer accounts (optional)
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In the Supabase SQL Editor, run `supabase/schema.sql` once — it creates the tables and seeds the current menu.
+3. Copy `.env.example` to `.env` and fill in your project's URL and anon/publishable key (Settings → API).
+4. Rebuild (`npm run build`).
+5. Visit `/admin` on the deployed site, sign up, then in Supabase go to **Table Editor → admins → Insert row** and paste your user id (from **Authentication → Users**) — this is what actually grants admin access, not just having an account.
+
+Once configured, the public site reads live menu data from Supabase (with edits/prices from `/admin` reflected immediately) and customers can optionally sign in to save their details for faster checkout — ordering without an account still works exactly the same.
+
+## Deploying
+
+```
+npm run build
+```
+
+Drag the resulting `dist` folder into your Netlify site's **Deploys** tab. There's no CI/CD connection — every change requires a fresh build + drag-and-drop.
