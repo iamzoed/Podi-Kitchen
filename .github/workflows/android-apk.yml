@@ -1,0 +1,45 @@
+name: Build Android APK
+
+# Manual trigger only — this does not run on every push, so it never
+# interferes with the website's own deploy (Netlify builds straight from
+# the repo independently of this workflow). Run it from the Actions tab
+# whenever you want a fresh APK to sideload.
+on:
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Sync Capacitor Android project with the latest web build
+        run: npx cap sync android
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: podi-kitchen-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
