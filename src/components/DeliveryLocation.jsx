@@ -3,11 +3,17 @@ import { MapPin, LocateFixed, Loader2, Pencil, CircleAlert } from 'lucide-react'
 import { useGeolocation } from '../hooks/useGeolocation'
 import { reverseGeocode, checkDeliveryEligibility, deliveryAreaConfigured } from '../utils/location'
 
+// "unavailable" is what browsers report both when GPS just can't get a fix
+// AND when the device's Location toggle is off system-wide — the Web
+// Geolocation API can't tell us which, and (unlike a native app) a website
+// has no way to pop the OS "turn on Location" dialog itself. Best we can do
+// is point the customer at the fix directly instead of a generic failure.
 const ERROR_MESSAGE = {
   denied: "Location permission was denied. You can enter your address manually.",
-  unavailable: "Couldn't detect your location. Please enter your address manually.",
-  timeout: "Couldn't detect your location. Please enter your address manually.",
+  unavailable: "Couldn't get a location fix — check that Location is turned on in your phone's settings, then try again. Or enter your address manually.",
+  timeout: "Location took too long to respond — check that Location is turned on in your phone's settings, then try again. Or enter your address manually.",
   unsupported: "Your browser doesn't support location detection. Please enter your address manually.",
+  'device-location-off': "Opened your phone's Location settings — turn it on, then come back and tap this button again. Or enter your address manually.",
 }
 
 // GPS readings above this are common indoors/on weak signal — still usable,
