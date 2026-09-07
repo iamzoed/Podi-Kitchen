@@ -6,6 +6,7 @@ import { WhatsAppIcon } from './SocialIcons'
 import { useEscapeToClose } from '../hooks/useEscapeToClose'
 import DeliveryLocation from './DeliveryLocation'
 import { checkDeliveryEligibility, deliveryRadiusBlocks } from '../utils/location'
+import { validateCustomer } from '../utils/validation'
 
 function shareAppMessage() {
   const url = typeof window !== 'undefined' ? window.location.origin : ''
@@ -21,13 +22,18 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
   const [orderSuccess, setOrderSuccess] = useState(null) // { orderNumber } — set once the WhatsApp handoff (popup or fallback link) has happened
   const [location, setLocation] = useState(null) // { lat, lng, accuracy, resolvedAddress } — only set via an explicit "Use my current location" tap
   const [autoFilledAddress, setAutoFilledAddress] = useState(null) // tracks what we wrote into the address field from GPS, so a manual edit can invalidate the pin
+  const [touched, setTouched] = useState(false) // only show field-level errors after a first submit attempt, not while the form is still empty/fresh
   const total = cartTotal(lines)
   const belowMinOrder = shopInfo.minOrder > 0 && total < shopInfo.minOrder
   const outsideRadius = Boolean(
     deliveryRadiusBlocks && location && !checkDeliveryEligibility(location.lat, location.lng).withinRadius
   )
-  const canOrder =
-    lines.length > 0 && customer.name && customer.phone && customer.address && !belowMinOrder && !outsideRadius
+  const { valid: customerValid, errors: fieldErrors } = validateCustomer(customer)
+  // Only the non-field conditions actually disable the button — an invalid
+  // field stays clickable so tapping it reveals exactly what's wrong
+  // (via `touched`) rather than leaving the customer guessing why a
+  // disabled button won't respond.
+  const canAttemptOrder = lines.length > 0 && !belowMinOrder && !outsideRadius
 
   // Prefill from a saved profile once, so it doesn't clobber what the
   // customer is actively typing on later renders.
@@ -70,7 +76,11 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
   }
 
   async function handleOrder() {
-    if (!canOrder || submitting) return
+    if (!canAttemptOrder || submitting) return
+    if (!customerValid) {
+      setTouched(true)
+      return
+    }
     setSubmitting(true)
     setOrderError('')
     setPlacedOrder(null)
@@ -238,34 +248,59 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
             )}
 
             <div className="space-y-2">
-              <input
-                placeholder="Your name"
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
-                value={customer.name}
-                onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
-              />
-              <input
-                placeholder="Phone number"
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
-                value={customer.phone}
-                onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
-              />
+              <div>
+                <input
+                  placeholder="Your name"
+                  maxLength={100}
+                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+                    touched && fieldErrors.name ? 'border-red-300 focus:ring-red-200' : 'focus:ring-brick-300'
+                  }`}
+                  value={customer.name}
+                  onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+                />
+                {touched && fieldErrors.name && <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>}
+              </div>
+
+              <div>
+                <input
+                  placeholder="Phone number"
+                  inputMode="tel"
+                  maxLength={16}
+                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+                    touched && fieldErrors.phone ? 'border-red-300 focus:ring-red-200' : 'focus:ring-brick-300'
+                  }`}
+                  value={customer.phone}
+                  onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+                />
+                {touched && fieldErrors.phone && <p className="text-xs text-red-600 mt-1">{fieldErrors.phone}</p>}
+              </div>
+
               <DeliveryLocation location={location} onChange={handleLocationChange} />
-              <textarea
-                placeholder="Delivery address"
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
-                rows={2}
-                value={customer.address}
-                onChange={(e) => handleAddressChange(e.target.value)}
-              />
+
+              <div>
+                <textarea
+                  placeholder="Delivery address"
+                  maxLength={300}
+                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+                    touched && fieldErrors.address ? 'border-red-300 focus:ring-red-200' : 'focus:ring-brick-300'
+                  }`}
+                  rows={2}
+                  value={customer.address}
+                  onChange={(e) => handleAddressChange(e.target.value)}
+                />
+                {touched && fieldErrors.address && <p className="text-xs text-red-600 mt-1">{fieldErrors.address}</p>}
+              </div>
+
               <input
                 placeholder="Landmark (optional)"
+                maxLength={100}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
                 value={customer.landmark}
                 onChange={(e) => setCustomer({ ...customer, landmark: e.target.value })}
               />
               <textarea
                 placeholder="Notes (optional)"
+                maxLength={300}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
                 rows={1}
                 value={customer.notes}
@@ -274,7 +309,7 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
             </div>
 
             <button
-              disabled={!canOrder || submitting}
+              disabled={!canAttemptOrder || submitting}
               onClick={handleOrder}
               className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5a] disabled:bg-gray-300 text-white font-semibold py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 disabled:hover:translate-y-0 disabled:shadow-none"
             >

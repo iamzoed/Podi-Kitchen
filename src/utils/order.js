@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient'
 import { googleMapsLink } from './location'
+import { validateCustomer } from './validation'
 
 // Postgres error codes raised by create_order_with_capacity() in
 // 005_kitchen_capacity.sql — their message text is already customer-safe
@@ -104,8 +105,9 @@ export async function createOrder({ lines, customer, userId, location }) {
   if (!lines?.length) {
     return { error: new Error('Your cart is empty.') }
   }
-  if (!customer?.name || !customer?.phone || !customer?.address) {
-    return { error: new Error('Please fill in your name, phone, and delivery address.') }
+  const { valid, errors } = validateCustomer(customer || {})
+  if (!valid) {
+    return { error: new Error(Object.values(errors)[0]) }
   }
 
   const items = lines.map((line) => ({
