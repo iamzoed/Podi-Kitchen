@@ -49,7 +49,7 @@ const POINTS = [
 export default function WhyUs() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h2 className="font-heading text-lg font-semibold text-brick-800 mb-4">Why Podi Kitchen</h2>
+      <h2 className="font-heading text-lg font-semibold text-brick-800 mb-4">Why States&amp;Swaad</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
         {POINTS.map((p) => (
           <div key={p.title} className="flex flex-col items-center text-center gap-2">

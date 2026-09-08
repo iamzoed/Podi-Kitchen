@@ -1,4 +1,4 @@
--- Podi Kitchen — delivery location capture.
+-- States&Swaad — delivery location capture.
 -- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Additive only: nullable columns, existing orders (and guest checkout) stay
 -- valid untouched. No new table, no location history, no tracking — just

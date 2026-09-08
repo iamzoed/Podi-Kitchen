@@ -1,6 +1,6 @@
-# Podi Kitchen
+# States&Swaad
 
-Ordering website for Podi Kitchen — a home kitchen selling South Indian breakfast (idli, dosa, tiffins, sides, combos, beverages). Customers customize items and check out over WhatsApp; a small admin panel manages the menu.
+Ordering website for States&Swaad — a home kitchen selling South Indian breakfast (idli, dosa, tiffins, sides, combos, beverages). Customers customize items and check out over WhatsApp; a small admin panel manages the menu.
 
 ## Stack
 

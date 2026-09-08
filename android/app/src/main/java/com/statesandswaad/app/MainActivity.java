@@ -1,4 +1,4 @@
-package com.podikitchen.app;
+package com.statesandswaad.app;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

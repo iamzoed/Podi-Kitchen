@@ -1,4 +1,4 @@
--- Podi Kitchen — Supabase schema + seed
+-- States&Swaad — Supabase schema + seed
 -- Run this once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Safe to re-run: seed uses ON CONFLICT DO NOTHING so it won't duplicate rows.
 

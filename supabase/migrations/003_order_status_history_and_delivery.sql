@@ -1,4 +1,4 @@
--- Podi Kitchen — Phase 2: order status workflow, audit history, delivery
+-- States&Swaad — Phase 2: order status workflow, audit history, delivery
 -- assignment foundation, and admin dashboard support.
 -- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Additive only: does not touch menu_items, does not alter Phase 1's orders/

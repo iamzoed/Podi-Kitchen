@@ -157,7 +157,7 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
               className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5a] text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all duration-150 mt-2"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              Share Podi Kitchen with friends
+              Share {shopInfo.name} with friends
             </a>
             <button onClick={handleDone} className="text-sm text-gray-400 hover:text-gray-600 underline mt-1">
               Continue browsing

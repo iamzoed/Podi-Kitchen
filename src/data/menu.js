@@ -23,18 +23,18 @@ import upmaImg from '../assets/upma.jpg'
 import appamImg from '../assets/appam.jpg'
 
 export const shopInfo = {
-  name: 'Podi Kitchen',
+  name: 'States&Swaad',
   tagline: 'Homemade Podi Idli & Dosa, made fresh to order',
   whatsappNumber: '911234567890', // country code + number, no + or spaces
   city: 'Mumbai',
   hours: '8:00 AM – 8:00 PM, Tue–Sun',
   about:
-    'Podi Kitchen is a Mumbai home kitchen making South Indian breakfast the traditional way — fresh batter, hand-ground podi, homemade ghee, and completely homemade with zero preservatives. No shortcuts, no hidden costs. Edit this line in src/data/menu.js to tell your own story.',
+    'States&Swaad is a Mumbai home kitchen making South Indian breakfast the traditional way — fresh batter, hand-ground podi, homemade ghee, and completely homemade with zero preservatives. No shortcuts, no hidden costs. Edit this line in src/data/menu.js to tell your own story.',
   deliveryAreas: 'Delivering across Mumbai', // e.g. "Delivering to Matunga, Sion, Dadar"
   freeDelivery: true, // set to false to hide the "Free Delivery" messaging
   minOrder: 150, // ₹, set to 0 to disable the "min order" note
-  facebookUrl: '', // paste your Facebook page URL here, e.g. 'https://facebook.com/podikitchen'
-  instagramUrl: '', // paste your Instagram profile URL here, e.g. 'https://instagram.com/podikitchen'
+  facebookUrl: '', // paste your Facebook page URL here, e.g. 'https://facebook.com/statesandswaad'
+  instagramUrl: '', // paste your Instagram profile URL here, e.g. 'https://instagram.com/statesandswaad'
 }
 
 // icon: lucide-react component name, rendered by CategoryNav

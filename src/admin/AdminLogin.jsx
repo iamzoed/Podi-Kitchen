@@ -45,7 +45,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6">
         <div className="flex items-center gap-2 mb-1">
           <ChefHat size={20} className="text-brick-600" />
-          <h1 className="font-heading font-semibold text-lg text-brick-700">Podi Kitchen Admin</h1>
+          <h1 className="font-heading font-semibold text-lg text-brick-700">States&amp;Swaad Admin</h1>
         </div>
         <p className="text-xs text-gray-500 mb-5">
           {mode === 'signin' ? 'Sign in to manage the menu.' : 'Create an admin account.'}

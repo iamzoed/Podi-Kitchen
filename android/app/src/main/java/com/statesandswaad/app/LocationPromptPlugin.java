@@ -1,4 +1,4 @@
-package com.podikitchen.app;
+package com.statesandswaad.app;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
--- Podi Kitchen — Phase 3: KITCHEN/DELIVERY roles, role-scoped RLS, delivery
+-- States&Swaad — Phase 3: KITCHEN/DELIVERY roles, role-scoped RLS, delivery
 -- user assignment, kitchen/delivery dashboards.
 -- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Additive/redefining only: does not drop orders/order_items/admins data.

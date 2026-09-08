@@ -1,4 +1,4 @@
--- Podi Kitchen — Phase 4: kitchen capacity, item-level limits, and
+-- States&Swaad — Phase 4: kitchen capacity, item-level limits, and
 -- transaction-safe order-capacity reservation.
 -- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Additive only. All capacity values below start unconfigured (null/off) —

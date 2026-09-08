@@ -42,7 +42,7 @@ jobs:
             keytool -genkeypair -v -keystore android/app/debug.keystore \
               -storepass android -keypass android -alias androiddebugkey \
               -keyalg RSA -keysize 2048 -validity 10000 \
-              -dname "CN=Podi Kitchen Debug, O=Podi Kitchen, C=IN"
+              -dname "CN=StatesAndSwaad Debug, O=StatesAndSwaad, C=IN"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add android/app/debug.keystore
@@ -60,5 +60,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: podi-kitchen-debug-apk
+          name: statesandswaad-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk

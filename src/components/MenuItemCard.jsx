@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronDown, Flame, Minus, Plus, Check, ShoppingCart, Share2 } from 'lucide-react'
-import { spiceLevels } from '../data/menu'
+import { spiceLevels, shopInfo } from '../data/menu'
 import { categoryAccents } from '../data/categoryAccents'
 import { computeLinePrice, whatsAppShareLink } from '../utils/order'
 
@@ -32,7 +32,7 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
   function handleShare(e) {
     e.stopPropagation()
     const url = typeof window !== 'undefined' ? window.location.origin : ''
-    const message = `Check out ${item.name} at Podi Kitchen 🍽️ — ${item.description} Starting at ₹${item.basePrice}. ${url}`
+    const message = `Check out ${item.name} at ${shopInfo.name} 🍽️ — ${item.description} Starting at ₹${item.basePrice}. ${url}`
     window.open(whatsAppShareLink(message), '_blank')
   }
 

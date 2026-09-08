@@ -1,4 +1,4 @@
--- Podi Kitchen — Phase 1: order storage + admin roles
+-- States&Swaad — Phase 1: order storage + admin roles
 -- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- Additive only: does not touch menu_items, does not drop or rewrite
 -- existing admins/profiles data. Safe to re-run (idempotent).

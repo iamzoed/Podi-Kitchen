@@ -132,7 +132,7 @@ function App() {
 
       <div className="bg-gold-500 text-brick-800 text-center text-xs sm:text-sm font-semibold py-1.5 px-4 flex items-center justify-center gap-1.5">
         <Sparkles size={13} />
-        Podi Kitchen — Crafted &amp; developed by Zoed Shaikh
+        States&amp;Swaad — Crafted &amp; developed by Zoed Shaikh
         <Sparkles size={13} />
       </div>
 
@@ -220,7 +220,7 @@ function App() {
       )}
 
       {/* Intro / trust content comes before the menu on purpose — a new
-          visitor should get a sense of what Podi Kitchen is before being
+          visitor should get a sense of what States&Swaad is before being
           dropped straight into a product grid. */}
       <WhyUs />
 
