@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, Trash2, ShoppingBag, Flame, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react'
+import { X, Trash2, ShoppingBag, Flame, AlertCircle, Loader2, CheckCircle2, Minus, Plus } from 'lucide-react'
 import { cartTotal, whatsAppOrderLink, whatsAppShareLink, createOrder } from '../utils/order'
 import { shopInfo } from '../data/menu'
 import { WhatsAppIcon } from './SocialIcons'
@@ -13,7 +13,7 @@ function shareAppMessage() {
   return `I just ordered from ${shopInfo.name} 🍽️ — homemade South Indian breakfast delivered fresh in ${shopInfo.city}! Check them out: ${url}`
 }
 
-export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, onSaveProfile, onOrderPlaced }) {
+export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClose, profile, onSaveProfile, onOrderPlaced }) {
   useEscapeToClose(onClose, isOpen)
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '', landmark: '', notes: '' })
   const [submitting, setSubmitting] = useState(false)
@@ -173,29 +173,58 @@ export default function CartDrawer({ lines, onRemove, isOpen, onClose, profile, 
             </div>
           )}
           {lines.map((line, i) => (
-            <div key={i} className="border rounded-xl p-3 text-sm animate-[fadeIn_0.2s_ease-in]">
-              <div className="flex justify-between font-medium">
-                <span>
-                  {line.menuItem.name} ({line.variant.name}) × {line.qty}
-                </span>
-                <span>₹{line.unitPrice * line.qty}</span>
+            <div key={i} className="flex gap-3 border rounded-xl p-3 text-sm animate-[fadeIn_0.2s_ease-in]">
+              <div className="w-16 h-16 rounded-lg overflow-hidden bg-brick-50 shrink-0">
+                {line.menuItem.image ? (
+                  <img src={line.menuItem.image} alt={line.menuItem.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="w-full h-full flex items-center justify-center text-2xl">{line.menuItem.emoji}</span>
+                )}
               </div>
-              {line.spiceLevel && (
-                <div className="flex items-center gap-1 text-gray-500 text-xs mt-1.5">
-                  <Flame size={12} className="fill-orange-300 text-orange-300" /> {line.spiceLevel}
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between gap-2 font-medium">
+                  <span className="truncate">
+                    {line.menuItem.name} ({line.variant.name})
+                  </span>
+                  <span className="shrink-0">₹{line.unitPrice * line.qty}</span>
                 </div>
-              )}
-              {line.addons.length > 0 && (
-                <div className="text-gray-500 text-xs mt-1">
-                  Add-ons: {line.addons.map((a) => a.name).join(', ')}
+                {line.spiceLevel && (
+                  <div className="flex items-center gap-1 text-gray-500 text-xs mt-1">
+                    <Flame size={12} className="fill-orange-300 text-orange-300" /> {line.spiceLevel}
+                  </div>
+                )}
+                {line.addons.length > 0 && (
+                  <div className="text-gray-500 text-xs mt-0.5 truncate">
+                    Add-ons: {line.addons.map((a) => a.name).join(', ')}
+                  </div>
+                )}
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center border border-gray-300 rounded-full bg-white">
+                    <button
+                      className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-brick-600"
+                      onClick={() => (line.qty > 1 ? onUpdateQty(i, line.qty - 1) : onRemove(i))}
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus size={12} />
+                    </button>
+                    <span className="w-5 text-center text-xs font-medium">{line.qty}</span>
+                    <button
+                      className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-brick-600"
+                      onClick={() => onUpdateQty(i, line.qty + 1)}
+                      aria-label="Increase quantity"
+                    >
+                      <Plus size={12} />
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => onRemove(i)}
+                    aria-label={`Remove ${line.menuItem.name} from cart`}
+                    className="flex items-center gap-1 text-gray-400 hover:text-red-600 text-xs transition-colors duration-150"
+                  >
+                    <Trash2 size={13} />
+                  </button>
                 </div>
-              )}
-              <button
-                onClick={() => onRemove(i)}
-                className="flex items-center gap-1 text-brick-600 text-xs mt-2 hover:text-brick-700"
-              >
-                <Trash2 size={12} /> Remove
-              </button>
+              </div>
             </div>
           ))}
         </div>

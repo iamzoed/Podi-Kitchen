@@ -21,6 +21,11 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
   const soldOut = availability === 'SOLD_OUT'
   const canOrder = !soldOut && !orderingClosed
   const badge = AVAILABILITY_BADGE[availability]
+  // Items with nothing to choose (one size, no spice choice, no add-ons)
+  // don't need the expand-to-customize step at all — showing qty + Add
+  // directly on the card face lets those get ordered in one tap, matching
+  // items that DO need a choice (variant/spice/addons) still expand first.
+  const hasChoices = item.variants.length > 1 || item.allowSpiceLevel || item.addons.length > 0
 
   const variant = item.variants.find((v) => v.id === variantId)
   const unitPrice = computeLinePrice(item, variant, addonIds)
@@ -54,13 +59,52 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
     setAddonIds([])
   }
 
+  // Rendered in exactly one of two places depending on hasChoices — never
+  // both at once for a given card — so this is a plain JSX value, not an
+  // inline component (defining a component function inside render would
+  // force React to remount this subtree on every re-render).
+  const addControls = (
+    <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center border border-gray-300 rounded-full bg-white shrink-0">
+        <button
+          className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brick-600"
+          onClick={() => setQty((q) => Math.max(1, q - 1))}
+          aria-label="Decrease quantity"
+        >
+          <Minus size={14} />
+        </button>
+        <span className="w-6 text-center text-sm font-medium">{qty}</span>
+        <button
+          className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brick-600"
+          onClick={() => setQty((q) => q + 1)}
+          aria-label="Increase quantity"
+        >
+          <Plus size={14} />
+        </button>
+      </div>
+      <button
+        onClick={handleAdd}
+        disabled={!canOrder}
+        className={`flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-150 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-md disabled:cursor-not-allowed ${
+          justAdded ? 'bg-green-600' : !canOrder ? 'bg-gray-400' : `bg-gradient-to-r ${accent.grad}`
+        }`}
+      >
+        {justAdded ? <Check size={16} /> : <ShoppingCart size={16} />}
+        {justAdded ? 'Added' : soldOut ? 'Sold Out' : orderingClosed ? 'Orders Closed' : `Add · ₹${unitPrice * qty}`}
+      </button>
+    </div>
+  )
+
   return (
     <div
       className={`group border border-brick-100 rounded-2xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${
         soldOut ? 'opacity-70 saturate-50' : ''
       }`}
     >
-      <button className="w-full text-left block" onClick={() => setOpen((o) => !o)}>
+      <button
+        className={`w-full text-left block ${!hasChoices ? 'cursor-default' : ''}`}
+        onClick={() => hasChoices && setOpen((o) => !o)}
+      >
         <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-brick-100 to-brick-50">
           {item.image ? (
             <img
@@ -82,7 +126,8 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
           )}
           <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
             <span className={`text-sm font-bold ${accent.text} bg-white/95 px-2.5 py-1 rounded-full shadow`}>
-              ₹{item.basePrice}+
+              ₹{item.basePrice}
+              {hasChoices ? '+' : ''}
             </span>
             {badge && (
               <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shadow ${badge.className}`}>
@@ -103,15 +148,20 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
               )}
               <h3 className="font-heading font-semibold text-white text-lg drop-shadow-sm truncate">{item.name}</h3>
             </div>
-            <ChevronDown
-              size={20}
-              className={`text-white drop-shadow-sm transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-            />
+            {hasChoices && (
+              <ChevronDown
+                size={20}
+                className={`text-white drop-shadow-sm transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+              />
+            )}
           </div>
         </div>
       </button>
-      <div className="flex items-start justify-between gap-2 px-4 py-3">
-        <button className="flex-1 text-left" onClick={() => setOpen((o) => !o)}>
+      <div className="flex items-start justify-between gap-2 px-4 pt-3">
+        <button
+          className={`flex-1 text-left ${!hasChoices ? 'cursor-default' : ''}`}
+          onClick={() => hasChoices && setOpen((o) => !o)}
+        >
           <p className="text-sm text-gray-500">{item.description}</p>
         </button>
         <button
@@ -123,6 +173,12 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
         </button>
       </div>
 
+      {/* Items with nothing to choose skip the expand-to-customize step
+          entirely — price + Add sit right on the card face so ordering
+          takes one tap, not two. */}
+      {!hasChoices && <div className="px-4 pb-3 pt-2">{addControls}</div>}
+
+      {hasChoices && (
       <div
         inert={!open}
         className={`grid transition-all duration-300 ease-in-out ${
@@ -206,46 +262,11 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
               </div>
             )}
 
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center border border-gray-300 rounded-full bg-white">
-                <button
-                  className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brick-600"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                >
-                  <Minus size={14} />
-                </button>
-                <span className="w-6 text-center text-sm font-medium">{qty}</span>
-                <button
-                  className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brick-600"
-                  onClick={() => setQty((q) => q + 1)}
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
-              <button
-                onClick={handleAdd}
-                disabled={!canOrder}
-                className={`flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-150 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-md disabled:cursor-not-allowed ${
-                  justAdded ? 'bg-green-600' : !canOrder ? 'bg-gray-400' : `bg-gradient-to-r ${accent.grad}`
-                }`}
-              >
-                {justAdded ? (
-                  <Check size={16} />
-                ) : (
-                  <ShoppingCart size={16} />
-                )}
-                {justAdded
-                  ? 'Added'
-                  : soldOut
-                    ? 'Sold Out'
-                    : orderingClosed
-                      ? 'Orders Closed'
-                      : `Add · ₹${unitPrice * qty}`}
-              </button>
-            </div>
+            <div className="pt-2">{addControls}</div>
           </div>
         </div>
       </div>
+      )}
     </div>
   )
 }

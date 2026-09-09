@@ -4,6 +4,7 @@ import { categories, shopInfo } from './data/menu'
 import heroImg from './assets/combo.jpg'
 import CategoryNav from './components/CategoryNav'
 import CategoryShowcase from './components/CategoryShowcase'
+import PopularToday from './components/PopularToday'
 import MumbaiSkyline from './components/MumbaiSkyline'
 import SideMenu from './components/SideMenu'
 import SearchAndFilters from './components/SearchAndFilters'
@@ -77,6 +78,15 @@ function App() {
 
   function removeFromCart(index) {
     setCartLines((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  // Updates one existing line's quantity in place — deliberately not
+  // merging/matching lines by item+variant+addons (that's a bigger, riskier
+  // change to how the cart identifies "the same line"); this only ever
+  // touches the exact line the customer is looking at in the cart.
+  function updateCartQty(index, qty) {
+    if (qty < 1) return
+    setCartLines((prev) => prev.map((line, i) => (i === index ? { ...line, qty } : line)))
   }
 
   function handleOrderPlaced() {
@@ -216,7 +226,23 @@ function App() {
                 shopInfo.name
               )}
             </h1>
+            <p className="font-heading text-gold-400 text-sm sm:text-base font-semibold mt-1.5">India's Flavours, Made Fresh.</p>
             <p className="text-brick-50 text-sm mt-1 max-w-md">{shopInfo.tagline}</p>
+
+            <div className="flex items-center gap-2.5 mt-4">
+              <a
+                href="#menu-section"
+                className="bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-150"
+              >
+                Order Now
+              </a>
+              <a
+                href="#menu-section"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur text-white text-sm font-semibold px-5 py-2.5 rounded-full ring-1 ring-white/30 transition-colors duration-150"
+              >
+                Explore Menu
+              </a>
+            </div>
           </div>
         </div>
 
@@ -239,9 +265,10 @@ function App() {
         </div>
       )}
 
-      {/* Intro / trust content comes before the menu on purpose — a new
-          visitor should get a sense of what States&Swaad is before being
-          dropped straight into a product grid. */}
+      {/* Real food, fast — bestsellers appear before the trust copy so a
+          returning-in-spirit visitor isn't stuck reading before they can
+          see anything they'd actually order. */}
+      <PopularToday items={menu} onSelect={setActiveCategory} />
       <WhyUs />
 
       <div id="menu-section">
@@ -342,6 +369,7 @@ function App() {
       <CartDrawer
         lines={cartLines}
         onRemove={removeFromCart}
+        onUpdateQty={updateCartQty}
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
         profile={profile}

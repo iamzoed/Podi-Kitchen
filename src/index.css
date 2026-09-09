@@ -7,6 +7,18 @@ body {
   background: #fffaf3;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Offsets the "Order Now"/"Explore Menu" anchor scroll so the sticky
+   category nav underneath doesn't land flush against the viewport edge. */
+#menu-section {
+  scroll-margin-top: 0.5rem;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

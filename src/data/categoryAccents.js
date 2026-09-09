@@ -1,54 +1,25 @@
-// One accent color per category — keeps the brand shell (header, footer, cart)
-// in the brick/gold palette while letting each category's content feel distinct.
-// Class names are written out in full (not built with template strings) so
-// Tailwind's content scanner can find them at build time.
+// One disciplined brand accent (brick green) used everywhere — this used
+// to be six different hues (one per category: amber/rose/violet/emerald/
+// sky/orange), which read as visually noisy/generic rather than premium.
+// A single consistent color for every "selected/active" state, with gold
+// reserved specifically for badges and the primary CTA gradient, reads as
+// a considered brand instead of a template. Kept the same object shape so
+// every existing callsite (CategoryNav, CategoryShowcase, MenuItemCard)
+// works unchanged — only the values moved.
+const brand = {
+  dot: 'bg-brick-600',
+  navActive: 'bg-brick-600 border-brick-600',
+  grad: 'from-brick-600 to-brick-700 hover:from-brick-700 hover:to-brick-800',
+  text: 'text-brick-700',
+  border: 'border-brick-600',
+  bgSoft: 'bg-brick-50',
+}
+
 export const categoryAccents = {
-  idli: {
-    dot: 'bg-amber-500',
-    navActive: 'bg-amber-500 border-amber-500',
-    grad: 'from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700',
-    text: 'text-amber-600',
-    border: 'border-amber-600',
-    bgSoft: 'bg-amber-50',
-  },
-  dosa: {
-    dot: 'bg-rose-500',
-    navActive: 'bg-rose-500 border-rose-500',
-    grad: 'from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700',
-    text: 'text-rose-600',
-    border: 'border-rose-600',
-    bgSoft: 'bg-rose-50',
-  },
-  tiffins: {
-    dot: 'bg-violet-500',
-    navActive: 'bg-violet-500 border-violet-500',
-    grad: 'from-violet-500 to-violet-600 hover:from-violet-600 hover:to-violet-700',
-    text: 'text-violet-600',
-    border: 'border-violet-600',
-    bgSoft: 'bg-violet-50',
-  },
-  sides: {
-    dot: 'bg-emerald-500',
-    navActive: 'bg-emerald-500 border-emerald-500',
-    grad: 'from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700',
-    text: 'text-emerald-600',
-    border: 'border-emerald-600',
-    bgSoft: 'bg-emerald-50',
-  },
-  combo: {
-    dot: 'bg-sky-500',
-    navActive: 'bg-sky-500 border-sky-500',
-    grad: 'from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700',
-    text: 'text-sky-600',
-    border: 'border-sky-600',
-    bgSoft: 'bg-sky-50',
-  },
-  beverages: {
-    dot: 'bg-orange-500',
-    navActive: 'bg-orange-500 border-orange-500',
-    grad: 'from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700',
-    text: 'text-orange-600',
-    border: 'border-orange-600',
-    bgSoft: 'bg-orange-50',
-  },
+  idli: brand,
+  dosa: brand,
+  tiffins: brand,
+  sides: brand,
+  combo: brand,
+  beverages: brand,
 }
