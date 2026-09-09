@@ -226,8 +226,12 @@ function App() {
                 shopInfo.name
               )}
             </h1>
-            <p className="font-heading text-gold-400 text-sm sm:text-base font-semibold mt-1.5">India's Flavours, Made Fresh.</p>
-            <p className="text-brick-50 text-sm mt-1 max-w-md">{shopInfo.tagline}</p>
+            {/* Dropped the separate gold "India's Flavours, Made Fresh"
+                headline that used to sit here — gold text on a busy food
+                photo read as low-contrast/hard to see, and it was mostly
+                repeating what this tagline already says. One clear white
+                line beats two competing ones. */}
+            <p className="text-white text-sm mt-1.5 max-w-md drop-shadow-sm">{shopInfo.tagline}</p>
 
             <div className="flex items-center gap-2.5 mt-4">
               <a
