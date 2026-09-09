@@ -156,28 +156,23 @@ function App() {
           against. */}
       <header className="relative overflow-hidden bg-brick-800">
         <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-brick-800/92 via-brick-700/88 to-brick-600/85" />
+        {/* A flat, strong, uniform darken — not a subtle gradient whose
+            opacity varies 85-92% depending on position — so text contrast
+            is guaranteed no matter what's directly behind it in the photo.
+            The previous gradient looked fine on a desktop monitor but read
+            as low-contrast on a real phone. */}
+        <div className="absolute inset-0 bg-brick-800/75" />
         <MumbaiSkyline className="absolute bottom-4 inset-x-0 w-full h-12 sm:h-14 text-white/[0.14] pointer-events-none" />
 
-        <div className="relative max-w-3xl mx-auto px-4 pt-4 pb-5 sm:pt-4 sm:pb-6">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div className="flex items-center gap-2.5">
-              <button
-                onClick={() => setMenuOpen(true)}
-                aria-label="Open menu"
-                className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/40 text-white transition-colors duration-150"
-              >
-                <Menu size={18} />
-              </button>
-              <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/30">
-                <span
-                  aria-hidden="true"
-                  className="font-heading text-xl leading-none bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent"
-                >
-                  &amp;
-                </span>
-              </div>
-            </div>
+        <div className="relative max-w-3xl mx-auto px-4 pt-3.5 pb-4 sm:pt-4 sm:pb-5">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/40 text-white transition-colors duration-150"
+            >
+              <Menu size={18} />
+            </button>
 
             {isSupabaseConfigured &&
               (user ? (
@@ -206,9 +201,11 @@ function App() {
           </div>
 
           <div className="animate-[fadeInUp_0.6s_ease-out_backwards]">
-            <span className="inline-flex items-center gap-1 bg-white/15 backdrop-blur text-white text-[11px] font-medium px-2.5 py-1 rounded-full ring-1 ring-white/25 mb-1.5">
-              📍 Amchi Mumbai
-            </span>
+            {/* Dropped the separate "Amchi Mumbai" pill that used to sit
+                here — the InfoBar right below the hero already says
+                "Delivering across Mumbai", so this was the same fact shown
+                twice within one screen's height. One less thing competing
+                for attention. */}
             {/* Split on "&" (not a space — "States&Swaad" is one word) so
                 the ampersand gets the gold accent, matching the brand mark,
                 while "States"/"Swaad" stay solid white for contrast against
