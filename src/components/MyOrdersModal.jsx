@@ -24,7 +24,7 @@ export default function MyOrdersModal({ userId, menu, onClose, onReorder }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md max-h-[85vh] flex flex-col overflow-hidden animate-[popIn_0.25s_ease-out]">
+      <div className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md max-h-[85vh] pb-[env(safe-area-inset-bottom)] flex flex-col overflow-hidden animate-[popIn_0.25s_ease-out]">
         <div className="flex items-center justify-between px-5 py-4 border-b">
           <h2 className="font-heading font-semibold text-gray-800">Your Orders</h2>
           <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600">

@@ -39,7 +39,7 @@ export default function SideMenu({
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="bg-gradient-to-br from-brick-600 to-brick-700 text-white p-4 flex items-center justify-between">
+        <div className="bg-gradient-to-br from-brick-600 to-brick-700 text-white p-4 pt-[max(1rem,env(safe-area-inset-top))] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center ring-1 ring-white/30">
               <ChefHat size={18} />
@@ -80,7 +80,7 @@ export default function SideMenu({
           })}
         </nav>
 
-        <div className="p-4 border-t space-y-3">
+        <div className="p-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t space-y-3">
           <button
             onClick={() => {
               onOpenCart()

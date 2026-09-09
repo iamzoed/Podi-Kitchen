@@ -15,12 +15,15 @@ import Footer from './components/Footer'
 import WhyUs from './components/WhyUs'
 import CustomerAuthModal from './components/CustomerAuthModal'
 import MyOrdersModal from './components/MyOrdersModal'
+import InstallPrompt from './components/InstallPrompt'
+import UpdateBanner from './components/UpdateBanner'
 import { cartTotal } from './utils/order'
 import { flyToCart } from './utils/flyToCart'
 import { useMenu } from './hooks/useMenu'
 import { useAuth } from './hooks/useAuth'
 import { useProfile } from './hooks/useProfile'
 import { useOrderingStatus } from './hooks/useOrderingStatus'
+import { useUpdateAvailable } from './hooks/useUpdateAvailable'
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient'
 
 const CLOSED_MESSAGE = {
@@ -34,6 +37,7 @@ function App() {
   const { user } = useAuth()
   const { profile, saveProfile } = useProfile(user?.id)
   const { orderingOpen, closedReason, itemStatus } = useOrderingStatus()
+  const { needsRefresh, applyUpdate } = useUpdateAvailable()
   const [activeCategory, setActiveCategory] = useState(categories[0].id)
   const [cartLines, setCartLines] = useState([])
   const [cartOpen, setCartOpen] = useState(false)
@@ -108,8 +112,14 @@ function App() {
 
   return (
     <div className="min-h-screen bg-cream font-sans">
+      {/* pt-[env(safe-area-inset-top)] on this outer element, separate from
+          the inner row's own padding, so they stack additively instead of
+          one overriding the other — needed because apple-mobile-web-app-
+          status-bar-style is "black-translucent" (content flows under the
+          status bar/notch by design), so this fixed header would otherwise
+          render partly behind it on iPhone. */}
       <div
-        className={`fixed top-0 inset-x-0 z-40 bg-brick-700/95 backdrop-blur text-white shadow-md transition-transform duration-300 ${
+        className={`fixed top-0 inset-x-0 z-40 pt-[env(safe-area-inset-top)] bg-brick-700/95 backdrop-blur text-white shadow-md transition-transform duration-300 ${
           scrolled ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
@@ -154,7 +164,12 @@ function App() {
           slow-loading image would briefly leave white heading text sitting
           on the page's plain white background with nothing to contrast
           against. */}
-      <header className="relative overflow-hidden bg-brick-800">
+      {/* pt-[env(safe-area-inset-top)] here (not on the inner content div,
+          so it stacks with that div's own padding) — same black-translucent
+          status-bar reasoning as the fixed header above. This is the very
+          first thing rendered on the page, so it's the one most at risk of
+          sitting behind the notch/Dynamic Island on iPhone. */}
+      <header className="relative overflow-hidden bg-brick-800 pt-[env(safe-area-inset-top)]">
         <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         {/* A flat, strong, uniform darken — not a subtle gradient whose
             opacity varies 85-92% depending on position — so text contrast
@@ -390,10 +405,14 @@ function App() {
       )}
 
       {toast && (
-        <div className="fixed top-4 inset-x-4 sm:inset-x-auto sm:right-4 sm:max-w-sm z-[70] bg-gray-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg animate-[popIn_0.25s_ease-out]">
+        <div className="fixed top-[max(1rem,env(safe-area-inset-top))] inset-x-4 sm:inset-x-auto sm:right-4 sm:max-w-sm z-[70] bg-gray-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg animate-[popIn_0.25s_ease-out]">
           {toast}
         </div>
       )}
+
+      {needsRefresh && <UpdateBanner onRefresh={applyUpdate} />}
+
+      <InstallPrompt hasEngaged={cartLines.length > 0} />
     </div>
   )
 }

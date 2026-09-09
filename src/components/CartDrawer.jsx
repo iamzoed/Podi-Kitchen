@@ -134,7 +134,7 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="p-4 border-b flex justify-between items-center">
+        <div className="p-4 pt-[max(1rem,env(safe-area-inset-top))] border-b flex justify-between items-center">
           <h2 className="font-semibold text-brick-700 flex items-center gap-2">
             <ShoppingBag size={18} /> Your order
           </h2>
@@ -229,8 +229,12 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
           ))}
         </div>
 
+        {/* pb-[max(1rem,env(safe-area-inset-bottom))] instead of the plain
+            p-4 bottom edge — this footer holds the primary checkout CTA,
+            and on iPhones with a home indicator that button would
+            otherwise sit right behind/under it. */}
         {lines.length > 0 && (
-          <div className="border-t p-4 space-y-3">
+          <div className="border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3">
             <div className="flex justify-between font-semibold">
               <span>Total</span>
               <span>₹{total}</span>
