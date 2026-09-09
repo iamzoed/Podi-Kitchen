@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ShoppingBag, ChefHat, Menu, Sparkles, User, AlertTriangle, LogOut, ChevronRight } from 'lucide-react'
+import { ShoppingBag, Menu, Sparkles, User, AlertTriangle, LogOut, ChevronRight } from 'lucide-react'
 import { categories, shopInfo } from './data/menu'
 import heroImg from './assets/combo.jpg'
 import CategoryNav from './components/CategoryNav'
@@ -138,11 +138,9 @@ function App() {
 
       <header className="relative overflow-hidden">
         <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-700/90 via-brick-600/90 to-amber-700/90" />
-        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-gold-400/25 blur-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brick-800/92 via-brick-700/88 to-brick-600/85" />
+        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-gold-400/20 blur-2xl" />
         <div className="absolute bottom-0 left-1/3 w-56 h-24 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute top-6 left-1/4 w-24 h-24 rounded-full bg-rose-300/20 blur-2xl" />
-        <div className="absolute -bottom-6 right-1/4 w-32 h-32 rounded-full bg-emerald-300/10 blur-2xl" />
         <MumbaiSkyline className="absolute bottom-4 inset-x-0 w-full h-12 sm:h-14 text-white/[0.14] pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 pt-4 pb-5 sm:pt-4 sm:pb-6">
@@ -156,7 +154,12 @@ function App() {
                 <Menu size={18} />
               </button>
               <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/30">
-                <ChefHat size={20} />
+                <span
+                  aria-hidden="true"
+                  className="font-heading text-xl leading-none bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent"
+                >
+                  &amp;
+                </span>
               </div>
             </div>
 
@@ -190,11 +193,22 @@ function App() {
             <span className="inline-flex items-center gap-1 bg-white/15 backdrop-blur text-white text-[11px] font-medium px-2.5 py-1 rounded-full ring-1 ring-white/25 mb-1.5">
               📍 Amchi Mumbai
             </span>
-            <h1 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight leading-[1.1]">
-              <span className="bg-gradient-to-r from-gold-400 to-gold-500 bg-clip-text text-transparent">
-                {shopInfo.name.split(' ')[0]}
-              </span>{' '}
-              {shopInfo.name.split(' ').slice(1).join(' ')}
+            {/* Split on "&" (not a space — "States&Swaad" is one word) so
+                the ampersand gets the gold accent, matching the brand mark,
+                while "States"/"Swaad" stay solid white for contrast against
+                the photo — a name-length-agnostic version of this treatment
+                would need this split logic revisited if the name changes
+                to something without an "&" in it. */}
+            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.1] text-white drop-shadow-sm">
+              {shopInfo.name.includes('&') ? (
+                <>
+                  {shopInfo.name.split('&')[0]}
+                  <span className="bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent">&amp;</span>
+                  {shopInfo.name.split('&').slice(1).join('&')}
+                </>
+              ) : (
+                shopInfo.name
+              )}
             </h1>
             <p className="text-brick-50 text-sm mt-1 max-w-md">{shopInfo.tagline}</p>
           </div>
