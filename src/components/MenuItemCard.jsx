@@ -115,7 +115,12 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
           ) : (
             <span className="absolute inset-0 flex items-center justify-center text-6xl">{item.emoji}</span>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/0" />
+          {/* Same lesson as the hero fix: a gradient that fades to fully
+              transparent by the middle isn't reliably dark enough right
+              where the name sits on a real phone, especially over a
+              light-colored dish/plate. Stronger bottom + a meaningful
+              floor in the middle instead of dropping to zero. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
           {item.popular && (
             <span
