@@ -104,10 +104,14 @@ function App() {
         }`}
       >
         <div className="max-w-3xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
-          <button onClick={() => setMenuOpen(true)} aria-label="Open menu" className="text-white/90 hover:text-white">
+          <button
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            className="w-9 h-9 -ml-1.5 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors duration-150"
+          >
             <Menu size={20} />
           </button>
-          <span className="font-heading font-semibold text-sm truncate">{shopInfo.name}</span>
+          <span className="font-heading font-semibold text-sm tracking-wide truncate">{shopInfo.name}</span>
           <div className="flex items-center gap-3">
             {isSupabaseConfigured && !user && (
               <button
@@ -136,11 +140,13 @@ function App() {
         <Sparkles size={13} />
       </div>
 
-      <header className="relative overflow-hidden">
+      {/* bg-brick-800 is a solid fallback behind the photo — without it, a
+          slow-loading image would briefly leave white heading text sitting
+          on the page's plain white background with nothing to contrast
+          against. */}
+      <header className="relative overflow-hidden bg-brick-800">
         <img src={heroImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-br from-brick-800/92 via-brick-700/88 to-brick-600/85" />
-        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-gold-400/20 blur-2xl" />
-        <div className="absolute bottom-0 left-1/3 w-56 h-24 rounded-full bg-white/10 blur-2xl" />
         <MumbaiSkyline className="absolute bottom-4 inset-x-0 w-full h-12 sm:h-14 text-white/[0.14] pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 pt-4 pb-5 sm:pt-4 sm:pb-6">
@@ -149,7 +155,7 @@ function App() {
               <button
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open menu"
-                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/30 transition-colors duration-150"
+                className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur flex items-center justify-center shrink-0 ring-1 ring-white/40 text-white transition-colors duration-150"
               >
                 <Menu size={18} />
               </button>
@@ -203,7 +209,7 @@ function App() {
               {shopInfo.name.includes('&') ? (
                 <>
                   {shopInfo.name.split('&')[0]}
-                  <span className="bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent">&amp;</span>
+                  <span className="mx-1.5 bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent">&amp;</span>
                   {shopInfo.name.split('&').slice(1).join('&')}
                 </>
               ) : (
