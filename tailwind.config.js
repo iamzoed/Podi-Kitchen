@@ -30,6 +30,9 @@ export default {
       fontFamily: {
         sans: ['Inter', '"Segoe UI"', 'system-ui', 'sans-serif'],
         heading: ['Poppins', '"Segoe UI"', 'system-ui', 'sans-serif'],
+        // Decorative Devanagari display font, used only for the "द" glyph
+        // in the brand mark (see BrandMark.jsx) — not a body/heading font.
+        devanagari: ['"Yatra One"', '"Segoe UI"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         glow: '0 10px 30px -10px rgba(36, 92, 69, 0.45)',

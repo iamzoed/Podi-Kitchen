@@ -17,6 +17,7 @@ import CustomerAuthModal from './components/CustomerAuthModal'
 import MyOrdersModal from './components/MyOrdersModal'
 import InstallPrompt from './components/InstallPrompt'
 import UpdateBanner from './components/UpdateBanner'
+import BrandMark from './components/BrandMark'
 import { cartTotal } from './utils/order'
 import { flyToCart } from './utils/flyToCart'
 import { useMenu } from './hooks/useMenu'
@@ -131,7 +132,9 @@ function App() {
           >
             <Menu size={20} />
           </button>
-          <span className="font-heading font-semibold text-sm tracking-wide truncate">{shopInfo.name}</span>
+          <span className="font-heading font-semibold text-sm tracking-wide truncate">
+            <BrandMark />
+          </span>
           <div className="flex items-center gap-3">
             {isSupabaseConfigured && !user && (
               <button
@@ -156,7 +159,7 @@ function App() {
 
       <div className="bg-gold-500 text-brick-800 text-center text-xs sm:text-sm font-semibold py-1.5 px-4 flex items-center justify-center gap-1.5">
         <Sparkles size={13} />
-        द OG Swaad — Crafted &amp; developed by Zoed Shaikh
+        <BrandMark /> — Crafted &amp; developed by Zoed Shaikh
         <Sparkles size={13} />
       </div>
 
@@ -221,18 +224,19 @@ function App() {
                 "Delivering across Mumbai", so this was the same fact shown
                 twice within one screen's height. One less thing competing
                 for attention. */}
-            {/* Ampersand-gold-accent treatment only kicks in for names that
-                contain "&" (kept for anyone who reuses this template) —
-                falls back to plain solid-white text otherwise. */}
+            {/* Gold-accent treatment: an ampersand gets it for names that
+                contain "&" (kept for anyone who reuses this template);
+                "द OG Swaad" gets it via BrandMark instead. Anything else
+                falls back to plain solid-white text. */}
             <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.1] text-white drop-shadow-sm">
-              {shopInfo.name.includes('&') ? (
+              {shopInfo.name.includes('&') && shopInfo.name !== 'द OG Swaad' ? (
                 <>
                   {shopInfo.name.split('&')[0]}
                   <span className="mx-1.5 bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent">&amp;</span>
                   {shopInfo.name.split('&').slice(1).join('&')}
                 </>
               ) : (
-                shopInfo.name
+                <BrandMark />
               )}
             </h1>
             {/* Dropped the separate gold "India's Flavours, Made Fresh"

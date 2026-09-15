@@ -2,13 +2,14 @@ import { Clock, Sparkles } from 'lucide-react'
 import { shopInfo } from '../data/menu'
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from './SocialIcons'
 import MumbaiSkyline from './MumbaiSkyline'
+import BrandMark from './BrandMark'
 
 export default function Footer() {
   return (
     <footer className="bg-brick-800 text-brick-50 relative overflow-hidden">
       <MumbaiSkyline className="absolute bottom-0 inset-x-0 w-full h-10 text-white/[0.06] pointer-events-none" />
       <div className="relative max-w-3xl mx-auto px-4 py-8 space-y-5">
-        <h2 className="font-heading text-lg font-semibold text-white">About {shopInfo.name}</h2>
+        <h2 className="font-heading text-lg font-semibold text-white">About <BrandMark /></h2>
         <p className="text-sm text-brick-100 leading-relaxed max-w-xl">{shopInfo.about}</p>
 
         <div className="flex flex-wrap items-center gap-4 pt-1">

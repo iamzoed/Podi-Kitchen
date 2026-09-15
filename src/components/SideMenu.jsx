@@ -3,6 +3,7 @@ import { shopInfo } from '../data/menu'
 import { categoryAccents } from '../data/categoryAccents'
 import { isSupabaseConfigured } from '../lib/supabaseClient'
 import { useEscapeToClose } from '../hooks/useEscapeToClose'
+import BrandMark from './BrandMark'
 
 const ICONS = { CircleDot, IceCreamCone, LayoutGrid, UtensilsCrossed, Soup, Coffee }
 
@@ -45,7 +46,7 @@ export default function SideMenu({
               <ChefHat size={18} />
             </div>
             <div>
-              <div className="font-heading font-semibold leading-tight">{shopInfo.name}</div>
+              <div className="font-heading font-semibold leading-tight"><BrandMark /></div>
               <div className="text-brick-100 text-xs">{shopInfo.city}</div>
             </div>
           </div>

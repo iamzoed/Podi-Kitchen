@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { ChefHat, LogOut, ClipboardList, UtensilsCrossed, Soup, Truck, Gauge } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
-import { shopInfo } from '../data/menu'
 import { ROLE_TABS } from '../data/orderConstants'
+import BrandMark from '../components/BrandMark'
 import AdminDashboard from './AdminDashboard'
 import AccessDenied from './AccessDenied'
 import OrderDashboard from './orders/OrderDashboard'
@@ -47,7 +47,7 @@ export default function AdminShell({ role }) {
         <div className="max-w-4xl mx-auto px-4 pt-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ChefHat size={20} />
-            <span className="font-heading font-semibold">{shopInfo.name} Admin</span>
+            <span className="font-heading font-semibold"><BrandMark /> Admin</span>
             {role && (
               <span className="text-[10px] font-semibold uppercase bg-white/15 px-1.5 py-0.5 rounded-full">
                 {role.replace('_', ' ')}

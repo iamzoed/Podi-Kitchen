@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { X, Share, SquarePlus } from 'lucide-react'
 import { useInstallPrompt } from '../hooks/useInstallPrompt'
+import BrandMark from './BrandMark'
 
 // Shown only once the customer has done something that signals real
 // intent (added an item), not the moment the page loads — an install nag
@@ -36,7 +37,7 @@ export default function InstallPrompt({ hasEngaged }) {
             <img src="/pwa-192x192.png" alt="" className="w-full h-full object-cover" />
           </span>
           <div className="flex-1 min-w-0">
-            <p className="font-heading font-semibold text-gray-800 text-sm">Get the द OG Swaad app</p>
+            <p className="font-heading font-semibold text-gray-800 text-sm">Get the <BrandMark /> app</p>
             <p className="text-xs text-gray-500 mt-0.5">Order your favourites faster from your home screen.</p>
           </div>
           <button
