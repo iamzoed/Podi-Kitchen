@@ -1,8 +1,8 @@
-# States&Swaad
+# द OG Swaad
 
 <!-- test commit: 2026-09-09, verifying push/deploy pipeline -->
 
-Ordering website for States&Swaad — a home kitchen selling South Indian breakfast (idli, dosa, tiffins, sides, combos, beverages). Customers customize items and check out over WhatsApp; a small admin panel manages the menu.
+Ordering website for द OG Swaad — a home kitchen selling South Indian breakfast (idli, dosa, tiffins, sides, combos, beverages). Customers customize items and check out over WhatsApp; a small admin panel manages the menu.
 
 ## Stack
 

@@ -156,7 +156,7 @@ function App() {
 
       <div className="bg-gold-500 text-brick-800 text-center text-xs sm:text-sm font-semibold py-1.5 px-4 flex items-center justify-center gap-1.5">
         <Sparkles size={13} />
-        States&amp;Swaad — Crafted &amp; developed by Zoed Shaikh
+        द OG Swaad — Crafted &amp; developed by Zoed Shaikh
         <Sparkles size={13} />
       </div>
 
@@ -221,12 +221,9 @@ function App() {
                 "Delivering across Mumbai", so this was the same fact shown
                 twice within one screen's height. One less thing competing
                 for attention. */}
-            {/* Split on "&" (not a space — "States&Swaad" is one word) so
-                the ampersand gets the gold accent, matching the brand mark,
-                while "States"/"Swaad" stay solid white for contrast against
-                the photo — a name-length-agnostic version of this treatment
-                would need this split logic revisited if the name changes
-                to something without an "&" in it. */}
+            {/* Ampersand-gold-accent treatment only kicks in for names that
+                contain "&" (kept for anyone who reuses this template) —
+                falls back to plain solid-white text otherwise. */}
             <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.1] text-white drop-shadow-sm">
               {shopInfo.name.includes('&') ? (
                 <>

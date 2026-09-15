@@ -15,8 +15,8 @@ export default defineConfig({
       injectRegister: null,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'og-image.jpg'],
       manifest: {
-        name: 'States & Swaad',
-        short_name: 'States & Swaad',
+        name: 'द OG Swaad',
+        short_name: 'द OG Swaad',
         description:
           'Homemade South Indian breakfast in Mumbai — podi idli, dosa, tiffins, combos and more, made fresh to order and delivered locally.',
         start_url: '/',
