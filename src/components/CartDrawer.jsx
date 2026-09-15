@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { X, Trash2, ShoppingBag, Flame, AlertCircle, Loader2, CheckCircle2, Minus, Plus } from 'lucide-react'
+import { X, Trash2, ShoppingBag, Flame, AlertCircle, Loader2, CheckCircle2, Minus, Plus, ChevronDown } from 'lucide-react'
 import { cartTotal, whatsAppOrderLink, whatsAppShareLink, createOrder } from '../utils/order'
 import { shopInfo } from '../data/menu'
 import { WhatsAppIcon } from './SocialIcons'
 import { useEscapeToClose } from '../hooks/useEscapeToClose'
+import { useGuestDetails } from '../hooks/useGuestDetails'
 import DeliveryLocation from './DeliveryLocation'
 import { checkDeliveryEligibility, deliveryRadiusBlocks } from '../utils/location'
 import { validateCustomer } from '../utils/validation'
@@ -15,6 +16,7 @@ function shareAppMessage() {
 
 export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClose, profile, onSaveProfile, onOrderPlaced }) {
   useEscapeToClose(onClose, isOpen)
+  const { guestDetails, saveGuestDetails } = useGuestDetails()
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '', landmark: '', notes: '' })
   const [submitting, setSubmitting] = useState(false)
   const [orderError, setOrderError] = useState('')
@@ -23,6 +25,7 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
   const [location, setLocation] = useState(null) // { lat, lng, accuracy, resolvedAddress } — only set via an explicit "Use my current location" tap
   const [autoFilledAddress, setAutoFilledAddress] = useState(null) // tracks what we wrote into the address field from GPS, so a manual edit can invalidate the pin
   const [touched, setTouched] = useState(false) // only show field-level errors after a first submit attempt, not while the form is still empty/fresh
+  const [showMoreDetails, setShowMoreDetails] = useState(false) // landmark/notes stay collapsed by default — a shorter form feels less intimidating
   const total = cartTotal(lines)
   const belowMinOrder = shopInfo.minOrder > 0 && total < shopInfo.minOrder
   const outsideRadius = Boolean(
@@ -35,15 +38,19 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
   // disabled button won't respond.
   const canAttemptOrder = lines.length > 0 && !belowMinOrder && !outsideRadius
 
-  // Prefill from a saved profile once, so it doesn't clobber what the
-  // customer is actively typing on later renders.
+  // Prefill from a saved profile (signed-in customer) or, failing that,
+  // guest details remembered on this device from a past order — most
+  // customers here never sign in, so the guest fallback is what actually
+  // saves most people the retyping. Runs once, so it doesn't clobber what
+  // the customer is actively typing on later renders.
   useEffect(() => {
-    if (profile && (profile.name || profile.phone || profile.address)) {
+    const source = profile && (profile.name || profile.phone || profile.address) ? profile : guestDetails
+    if (source && (source.name || source.phone || source.address)) {
       setCustomer((c) => ({
         ...c,
-        name: c.name || profile.name || '',
-        phone: c.phone || profile.phone || '',
-        address: c.address || profile.address || '',
+        name: c.name || source.name || '',
+        phone: c.phone || source.phone || '',
+        address: c.address || source.address || '',
       }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,6 +107,7 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
     if (onSaveProfile) {
       onSaveProfile({ name: customer.name, phone: customer.phone, address: customer.address })
     }
+    saveGuestDetails({ name: customer.name, phone: customer.phone, address: customer.address })
 
     if (win) {
       setOrderSuccess({ orderNumber: order.order_number })
@@ -324,21 +332,38 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
                 {touched && fieldErrors.address && <p className="text-xs text-red-600 mt-1">{fieldErrors.address}</p>}
               </div>
 
-              <input
-                placeholder="Landmark (optional)"
-                maxLength={100}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
-                value={customer.landmark}
-                onChange={(e) => setCustomer({ ...customer, landmark: e.target.value })}
-              />
-              <textarea
-                placeholder="Notes (optional)"
-                maxLength={300}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
-                rows={1}
-                value={customer.notes}
-                onChange={(e) => setCustomer({ ...customer, notes: e.target.value })}
-              />
+              {/* Landmark/notes are genuinely optional on every order — kept
+                  out of sight by default so the form looks shorter and
+                  less intimidating; a customer who needs them can still
+                  get to them in one tap. */}
+              {showMoreDetails ? (
+                <>
+                  <input
+                    placeholder="Landmark (optional)"
+                    maxLength={100}
+                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
+                    value={customer.landmark}
+                    onChange={(e) => setCustomer({ ...customer, landmark: e.target.value })}
+                  />
+                  <textarea
+                    placeholder="Notes (optional)"
+                    maxLength={300}
+                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brick-300"
+                    rows={1}
+                    value={customer.notes}
+                    onChange={(e) => setCustomer({ ...customer, notes: e.target.value })}
+                  />
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowMoreDetails(true)}
+                  className="flex items-center gap-1 text-xs text-gray-500 hover:text-brick-600 py-1"
+                >
+                  <ChevronDown size={14} />
+                  Add landmark or note (optional)
+                </button>
+              )}
             </div>
 
             <button
@@ -357,6 +382,9 @@ export default function CartDrawer({ lines, onRemove, onUpdateQty, isOpen, onClo
                 </>
               )}
             </button>
+            <p className="text-center text-xs text-gray-400">
+              This opens WhatsApp — just tap the green Send button there to confirm.
+            </p>
           </div>
         )}
           </>

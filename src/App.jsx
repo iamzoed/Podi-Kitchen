@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ShoppingBag, Menu, Sparkles, User, AlertTriangle, LogOut, ChevronRight } from 'lucide-react'
+import { ShoppingBag, Menu, Sparkles, User, AlertTriangle, LogOut, ChevronRight, Phone } from 'lucide-react'
 import { categories, shopInfo } from './data/menu'
 import heroImg from './assets/combo.jpg'
 import CategoryNav from './components/CategoryNav'
@@ -51,6 +51,10 @@ function App() {
   const [vegOnly, setVegOnly] = useState(false)
   const [popularOnly, setPopularOnly] = useState(false)
   const cartBtnRef = useRef(null)
+  // Same number as WhatsApp — a home kitchen this size has one line, and a
+  // phone call is the lowest-friction path of all for a customer who isn't
+  // comfortable with apps/forms.
+  const callHref = `tel:+${shopInfo.whatsappNumber}`
 
   const trimmedQuery = searchQuery.trim().toLowerCase()
   const isSearching = trimmedQuery.length > 0
@@ -136,6 +140,13 @@ function App() {
             <BrandMark />
           </span>
           <div className="flex items-center gap-3">
+            <a
+              href={callHref}
+              aria-label="Call to order"
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors duration-150"
+            >
+              <Phone size={16} />
+            </a>
             {isSupabaseConfigured && !user && (
               <button
                 onClick={() => setAuthOpen(true)}
@@ -246,18 +257,22 @@ function App() {
                 line beats two competing ones. */}
             <p className="text-white text-sm mt-1.5 max-w-md drop-shadow-sm">{shopInfo.tagline}</p>
 
-            <div className="flex items-center gap-2.5 mt-4">
+            <div className="flex items-center gap-2.5 mt-4 flex-wrap">
               <a
                 href="#menu-section"
                 className="bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-150"
               >
                 Order Now
               </a>
+              {/* Labeled, not just an icon — a phone call is the easiest
+                  possible way to order for a customer who isn't confident
+                  with apps or forms, so this needs to read at a glance. */}
               <a
-                href="#menu-section"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur text-white text-sm font-semibold px-5 py-2.5 rounded-full ring-1 ring-white/30 transition-colors duration-150"
+                href={callHref}
+                className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 backdrop-blur text-white text-sm font-semibold px-5 py-2.5 rounded-full ring-1 ring-white/30 transition-colors duration-150"
               >
-                Explore Menu
+                <Phone size={15} />
+                Call to Order
               </a>
             </div>
           </div>
