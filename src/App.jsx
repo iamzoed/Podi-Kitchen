@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ShoppingBag, Menu, Sparkles, User, AlertTriangle, LogOut, ChevronRight, Phone } from 'lucide-react'
+import { ShoppingBag, Menu, User, AlertTriangle, LogOut, ChevronRight, Phone } from 'lucide-react'
 import { categories, shopInfo } from './data/menu'
 import heroImg from './assets/combo.jpg'
 import CategoryNav from './components/CategoryNav'
@@ -166,12 +166,6 @@ function App() {
             </button>
           </div>
         </div>
-      </div>
-
-      <div className="bg-gold-500 text-brick-800 text-center text-xs sm:text-sm font-semibold py-1.5 px-4 flex items-center justify-center gap-1.5">
-        <Sparkles size={13} />
-        <BrandMark /> — Crafted &amp; developed by Zoed Shaikh
-        <Sparkles size={13} />
       </div>
 
       {/* bg-brick-800 is a solid fallback behind the photo — without it, a
