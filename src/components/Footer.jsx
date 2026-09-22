@@ -27,29 +27,35 @@ export default function Footer() {
           </span>
         </div>
 
-        <div className="pt-1">
-          <div className="text-xs font-semibold uppercase tracking-wide text-brick-200 mb-2">Follow us</div>
-          <div className="flex items-center gap-3">
-            <a
-              href={shopInfo.facebookUrl || '#'}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Follow us on Facebook"
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-150"
-            >
-              <FacebookIcon className="w-5 h-5" />
-            </a>
-            <a
-              href={shopInfo.instagramUrl || '#'}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Follow us on Instagram"
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-150"
-            >
-              <InstagramIcon className="w-5 h-5" />
-            </a>
+        {(shopInfo.facebookUrl || shopInfo.instagramUrl) && (
+          <div className="pt-1">
+            <div className="text-xs font-semibold uppercase tracking-wide text-brick-200 mb-2">Follow us</div>
+            <div className="flex items-center gap-3">
+              {shopInfo.facebookUrl && (
+                <a
+                  href={shopInfo.facebookUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Follow us on Facebook"
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-150"
+                >
+                  <FacebookIcon className="w-5 h-5" />
+                </a>
+              )}
+              {shopInfo.instagramUrl && (
+                <a
+                  href={shopInfo.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Follow us on Instagram"
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-150"
+                >
+                  <InstagramIcon className="w-5 h-5" />
+                </a>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="border-t border-white/10 pt-4 flex flex-col gap-1.5 text-xs text-brick-200">
           <span>Made with ❤️ in {shopInfo.city}</span>
