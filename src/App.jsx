@@ -3,7 +3,6 @@ import { ShoppingBag, Menu, User, AlertTriangle, LogOut, ChevronRight, Phone } f
 import { categories, shopInfo } from './data/menu'
 import heroImg from './assets/combo.jpg'
 import CategoryNav from './components/CategoryNav'
-import CategoryShowcase from './components/CategoryShowcase'
 import PopularToday from './components/PopularToday'
 import MumbaiSkyline from './components/MumbaiSkyline'
 import SideMenu from './components/SideMenu'
@@ -298,7 +297,6 @@ function App() {
       <WhyUs />
 
       <div id="menu-section">
-        <CategoryShowcase categories={categories} items={menu} active={activeCategory} onSelect={setActiveCategory} />
         <CategoryNav categories={categories} active={activeCategory} onSelect={setActiveCategory} />
         <SearchAndFilters
           query={searchQuery}

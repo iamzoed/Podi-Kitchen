@@ -4,8 +4,8 @@
 // A single consistent color for every "selected/active" state, with gold
 // reserved specifically for badges and the primary CTA gradient, reads as
 // a considered brand instead of a template. Kept the same object shape so
-// every existing callsite (CategoryNav, CategoryShowcase, MenuItemCard)
-// works unchanged — only the values moved.
+// every existing callsite (CategoryNav, MenuItemCard) works unchanged —
+// only the values moved.
 const brand = {
   dot: 'bg-brick-600',
   navActive: 'bg-brick-600 border-brick-600',

@@ -11,9 +11,13 @@ export default function BrandMark({ className = '' }) {
   }
   return (
     <span className={className}>
-      <span className="font-devanagari text-[1.25em] align-[-0.06em] bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent">
+      {/* mr (not a text space) keeps deliberate, consistent breathing room
+          between "द" and "OG" at every size — a plain space was too tight
+          and let it misread as one word ("Dog Swaad") instead of a
+          Devanagari mark followed by the Latin wordmark. */}
+      <span className="font-devanagari text-[1.35em] mr-[0.2em] align-[-0.05em] bg-gradient-to-br from-gold-400 to-gold-500 bg-clip-text text-transparent drop-shadow-[0_1px_8px_rgba(232,121,31,0.4)]">
         द
-      </span>{' '}
+      </span>
       OG Swaad
     </span>
   )
