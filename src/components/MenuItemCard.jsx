@@ -97,7 +97,7 @@ export default function MenuItemCard({ item, onAdd, availability = 'AVAILABLE', 
 
   return (
     <div
-      className={`group border border-brick-100 rounded-2xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${
+      className={`group border border-brick-100 rounded-2xl bg-gradient-to-b from-white to-brick-50/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${
         soldOut ? 'opacity-70 saturate-50' : ''
       }`}
     >
