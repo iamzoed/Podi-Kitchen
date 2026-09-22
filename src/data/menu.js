@@ -34,7 +34,7 @@ export const shopInfo = {
   freeDelivery: true, // set to false to hide the "Free Delivery" messaging
   minOrder: 150, // ₹, set to 0 to disable the "min order" note
   facebookUrl: '', // paste your Facebook page URL here, e.g. 'https://facebook.com/statesandswaad'
-  instagramUrl: '', // paste your Instagram profile URL here, e.g. 'https://instagram.com/statesandswaad'
+  instagramUrl: 'https://www.instagram.com/theogswaad', // paste your Instagram profile URL here, e.g. 'https://instagram.com/statesandswaad'
 }
 
 // icon: lucide-react component name, rendered by CategoryNav
